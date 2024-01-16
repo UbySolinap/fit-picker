@@ -7,7 +7,7 @@ function AppLayout() {
   return (
     <div className="flex">
       <Sidebar/>
-      <div className="w-screen mx-auto">
+      <div className="w-screen overflow-hidden">
         <Header />
         <main>
           <Outlet />

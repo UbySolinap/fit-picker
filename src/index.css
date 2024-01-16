@@ -4,9 +4,26 @@
 
 body {
     font-family: Inter;
-  }
+}
+
+.slick-prev {
+    left: 3% !important;
+    z-index: 1;
+    background-color: black !important;
+}
+
+.slick-next {
+    right: 3% !important;
+    z-index: 1;
+    background-color: black !important;
+}
 
 @layer utilities {
+    /* Container section */
+    .max-container {
+        @apply mx-auto max-w-[1440px];
+    }
+
     /* Sidebar section */
     .sidebar-list {
         @apply cursor-pointer hover:bg-color-dark-blue rounded-md flex flex-row gap-2 py-2
@@ -18,5 +35,10 @@ body {
 
     .sidebar-text {
         @apply text-lg md:text-xl;
+    }
+
+    /* Others Section */
+    .flex-between {
+        @apply flex justify-between items-center
     }
 }
