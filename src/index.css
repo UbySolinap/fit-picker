@@ -3,42 +3,49 @@
 @tailwind utilities;
 
 body {
-    font-family: Inter;
+  font-family: Inter;
 }
 
-.slick-prev {
-    left: 3% !important;
-    z-index: 1;
-    background-color: black !important;
+/* .slick-prev {
+  left: 3% !important;
+  z-index: 1;
+  background-color: black !important;
 }
 
 .slick-next {
-    right: 3% !important;
-    z-index: 1;
-    background-color: black !important;
-}
+  right: 3% !important;
+  z-index: 1;
+  background-color: black !important;
+} */
 
 @layer utilities {
-    /* Container section */
-    .max-container {
-        @apply mx-auto max-w-[1440px];
-    }
+  /* Sidebar section */
+  .sidebar-list {
+    @apply flex cursor-pointer flex-row items-center gap-2 rounded-md font-semibold text-white hover:bg-color-dark-blue;
+  }
 
-    /* Sidebar section */
-    .sidebar-list {
-        @apply cursor-pointer hover:bg-color-dark-blue rounded-md flex flex-row gap-2 py-2
-    }
+  .sidebar-icon {
+    @apply rounded-md bg-color-dark-gray p-1 text-4xl md:text-3xl lg:text-4xl;
+  }
 
-    .sidebar-icon {
-        @apply bg-color-dark-gray text-3xl md:text-4xl p-1 rounded-md
-    }
+  .sidebar-text {
+    @apply text-lg md:text-base xl:text-lg;
+  }
 
-    .sidebar-text {
-        @apply text-lg md:text-xl;
-    }
+  .utilities-list {
+    @apply flex justify-center font-semibold text-white;
+  }
 
-    /* Others Section */
-    .flex-between {
-        @apply flex justify-between items-center
-    }
+  .utilities-icon {
+    @apply float-left p-1 text-4xl md:text-3xl lg:text-4xl;
+  }
+
+  .utilities-button {
+    @apply flex items-center gap-1 rounded-lg  bg-color-dark-blue py-1 duration-100 hover:scale-110;
+  }
+
+  /* Others Section */
+  .flex-between {
+    @apply flex items-center justify-between;
+  }
 }

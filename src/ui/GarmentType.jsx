@@ -1,9 +1,9 @@
 function GarmentType({ garmentType }) {
-    return (
-        <div className="border hover:scale-110 duration-100 py-1 px-2 rounded-md font-semibold text-white bg-color-dark-blue italic text-xs md:text-base">
-            <p>{garmentType}</p>
-        </div>
-    )
+  return (
+    <p className="rounded-md bg-color-dark-blue px-1 py-1 text-xs font-semibold italic text-white duration-100 hover:scale-110 sm:px-2 md:text-base">
+      {garmentType}
+    </p>
+  );
 }
 
-export default GarmentType
+export default GarmentType;
