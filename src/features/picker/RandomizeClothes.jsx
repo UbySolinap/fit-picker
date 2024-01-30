@@ -1,23 +1,24 @@
-import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { useClothes } from "./useClothes";
 import { addItem } from "./pickerSlice";
+import toast from "react-hot-toast";
 
 import { FaRepeat } from "react-icons/fa6";
 
 import Button from "../../ui/Button";
+import { useClothesType } from "./useClothesType";
 
 // Function to select a random item from the given clothes
-function pickRandomItem(clothes, itemType) {
-  const filteredClothes = clothes.filter((item) => item.type === itemType);
-  const randomItem =
-    filteredClothes[Math.floor(Math.random() * filteredClothes.length)];
+function pickRandomItem(clothes) {
+  const randomItem = clothes[Math.floor(Math.random() * clothes.length)];
 
   return randomItem;
 }
 
-function RandomizeClothes({ open }) {
-  const { clothes, error } = useClothes();
+function RandomizeClothes({ open, onClose }) {
+  const { clothes: topsClothes } = useClothesType("tops");
+  const { clothes: bottomsClothes } = useClothesType("bottoms");
+  const { clothes: outerWearClothes } = useClothesType("outerwear");
+  const { clothes: footWearClothes } = useClothesType("footwear");
 
   const isTopsLocked = useSelector((state) => state.picker.tops.isLocked);
   const isBottomsLocked = useSelector((state) => state.picker.bottoms.isLocked);
@@ -32,22 +33,22 @@ function RandomizeClothes({ open }) {
 
   function handleRandomize() {
     if (!isTopsLocked) {
-      const randomItem = pickRandomItem(clothes, "tops");
+      const randomItem = pickRandomItem(topsClothes);
       dispatch(addItem(randomItem));
     }
     if (!isBottomsLocked) {
-      const randomItem = pickRandomItem(clothes, "bottoms");
+      const randomItem = pickRandomItem(bottomsClothes);
       dispatch(addItem(randomItem));
     }
     if (!isOuterwearLocked) {
-      const randomItem = pickRandomItem(clothes, "outerwear");
+      const randomItem = pickRandomItem(outerWearClothes);
       dispatch(addItem(randomItem));
     }
     if (!isFootwearLocked) {
-      const randomItem = pickRandomItem(clothes, "footwear");
+      const randomItem = pickRandomItem(footWearClothes);
       dispatch(addItem(randomItem));
     }
-
+    onClose();
     toast.dismiss();
     toast.success("🔀 Randomized clothes selection.");
   }

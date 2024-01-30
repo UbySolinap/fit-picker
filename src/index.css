@@ -2,22 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: Inter;
-}
-
-/* .slick-prev {
-  left: 3% !important;
-  z-index: 1;
-  background-color: black !important;
-}
-
-.slick-next {
-  right: 3% !important;
-  z-index: 1;
-  background-color: black !important;
-} */
-
 @layer utilities {
   /* Sidebar section */
   .sidebar-list {
@@ -25,7 +9,7 @@ body {
   }
 
   .sidebar-icon {
-    @apply rounded-md bg-color-dark-gray p-1 text-4xl md:text-3xl lg:text-4xl;
+    @apply rounded-md bg-color-dark-gray p-1 text-4xl duration-100 hover:scale-110 md:text-3xl lg:text-4xl;
   }
 
   .sidebar-text {
@@ -47,5 +31,9 @@ body {
   /* Others Section */
   .flex-between {
     @apply flex items-center justify-between;
+  }
+
+  .image-size {
+    @apply h-64 w-72 object-contain md:h-72 md:w-80;
   }
 }

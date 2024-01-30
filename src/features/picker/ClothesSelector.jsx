@@ -1,28 +1,34 @@
-import { useQuery } from "@tanstack/react-query";
-import { getClothesType } from "../../services/apiClothes";
 import { useEffect, useRef } from "react";
+import { useClothesType } from "./useClothesType";
+import { useDispatch } from "react-redux";
+import { addSubTypes } from "./pickerSlice";
 import Slider from "react-slick";
 
 import Spinner from "../../ui/Spinner";
 import Garment from "./Garment";
 import ClothesOperation from "./ClothesOperation";
-import Button from "../../ui/Button";
 
-import { GrPrevious, GrNext } from "react-icons/gr";
+import NextArrow from "../../ui/NextArrow";
+import PrevArrow from "../../ui/PrevArrow";
 
 function ClothesSelector({ type, selected }) {
-  const {
-    data: clothes,
-    error,
-    isLoading,
-  } = useQuery({
-    queryKey: ["clothes", type],
-    queryFn: () => getClothesType(type),
-  });
+  const { clothes, isLoading, error } = useClothesType(type);
+
+  const dispatch = useDispatch();
+
+  // Automatically adds all the subtype in a ui state slice.
+  useEffect(
+    function () {
+      if (!isLoading) {
+        dispatch(addSubTypes({ clothes, type }));
+      }
+    },
+    [isLoading, clothes, dispatch, type],
+  );
 
   const sliderRef = useRef();
 
-  // effect that will jump the display to the selected item.
+  // effect that will jump the display to the selected item when a change occurs.
   useEffect(
     function () {
       // The if was used to prevent the slider from going back to the start once an item was removed from selection.
@@ -41,6 +47,8 @@ function ClothesSelector({ type, selected }) {
     speed: 300,
     slidesToShow: 4,
     slidesToScroll: 1,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
     responsive: [
       {
         breakpoint: 1536,
@@ -85,11 +93,9 @@ function ClothesSelector({ type, selected }) {
   if (isLoading) return <Spinner />;
 
   return (
-    <div className="relative mx-6 lg:mx-16 2xl:mx-20">
+    <div className="mx-6 lg:mx-16 2xl:mx-20">
       <ClothesOperation type={type} />
-      <Button type="prev" onClick={() => sliderRef?.current?.slickPrev()}>
-        <GrPrevious />
-      </Button>
+
       <Slider {...settings} ref={sliderRef}>
         {clothes.map((garment) => (
           <Garment
@@ -100,10 +106,6 @@ function ClothesSelector({ type, selected }) {
           />
         ))}
       </Slider>
-
-      <Button type="next" onClick={() => sliderRef?.current?.slickNext()}>
-        <GrNext />
-      </Button>
     </div>
   );
 }
