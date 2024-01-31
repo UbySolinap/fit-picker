@@ -51,34 +51,38 @@ function EditClothesForm({ garment, type, onCloseModal }) {
   }
 
   return (
-    <Form isLoading={isEditing} formTitle="Edit" image={image}>
+    <Form isLoading={isEditing} formTitle="Edit item">
       <div className="w-72 md:ml-4 md:flex md:flex-col">
-        <h2 className="mb-2 mt-2 text-base font-bold text-color-dark-blue">
-          Type:
-          <span className="font-light italic text-slate-400">
-            {" (Click the type to remove)"}
-          </span>
-        </h2>
+        <div className="md:flex">
+          <img src={image} alt="item image" className="image-size" />
 
-        <SubTypeBubbles
-          subTypes={newSubtypes}
-          handleRemoveType={handleRemoveType}
-        />
-
-        <div className="my-2">
-          <h2 className="mb-1 mt-1 flex gap-x-1 border-t border-color-light-blue pt-1 text-base font-bold text-color-dark-blue">
-            Add type:
+          <h2 className="mb-2 mt-2 text-base font-bold text-color-dark-blue">
+            Type:
+            <span className="font-light italic text-slate-400">
+              {" (Click the type to remove)"}
+            </span>
           </h2>
-          <InputType
-            typeInput={typeInput}
-            onChange={handleTypeInput}
-            onClick={handleAdd}
-          />
-        </div>
 
-        <Button type="submit" onClick={handleSubmit} disabled={isEditing}>
-          Submit
-        </Button>
+          <SubTypeBubbles
+            subTypes={newSubtypes}
+            handleRemoveType={handleRemoveType}
+          />
+
+          <div className="my-2">
+            <h2 className="mb-1 mt-1 flex gap-x-1 border-t border-color-light-blue pt-1 text-base font-bold text-color-dark-blue">
+              Add type:
+            </h2>
+            <InputType
+              typeInput={typeInput}
+              onChange={handleTypeInput}
+              onClick={handleAdd}
+            />
+          </div>
+
+          <Button type="submit" onClick={handleSubmit} disabled={isEditing}>
+            Submit
+          </Button>
+        </div>
       </div>
     </Form>
   );

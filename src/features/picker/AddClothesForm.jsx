@@ -75,44 +75,48 @@ function AddClothesForm({ type, onCloseModal }) {
   }
 
   return (
-    <Form
-      isLoading={isAdding}
-      formTitle="Add"
-      image={image ? URL.createObjectURL(image) : "./placeholder-img.png"}
-    >
+    <Form isLoading={isAdding} formTitle="Add item">
       <div className="w-min md:ml-4 md:flex md:flex-col">
-        <ImageAdd onChange={handleImage} />
-        <div className="mb-1 flex gap-x-1 border-t border-color-light-blue pt-1">
-          <h2 className="text-base font-bold text-color-dark-blue">
-            Add type:
-          </h2>
-          {subTypes.length !== 0 && (
-            <Button type="formButton" onClick={() => setSubTypes([])}>
-              Clear
-            </Button>
-          )}
-        </div>
-
-        <GarmentType subTypes={subTypes} />
-
-        <div className="mb-2 flex items-center gap-x-1">
-          <p className="font-semibold text-color-dark-blue">Suggestions:</p>
-          <Select
-            options={options}
-            onChange={handleSelect}
-            className="rounded-sm border border-color-dark-blue px-1"
+        <div className="md:flex">
+          <img
+            src={image ? URL.createObjectURL(image) : "./placeholder-img.png"}
+            alt="item image"
+            className="image-size"
           />
+
+          <ImageAdd onChange={handleImage} />
+          <div className="mb-1 flex gap-x-1 border-t border-color-light-blue pt-1">
+            <h2 className="text-base font-bold text-color-dark-blue">
+              Add type:
+            </h2>
+            {subTypes.length !== 0 && (
+              <Button type="formButton" onClick={() => setSubTypes([])}>
+                Clear
+              </Button>
+            )}
+          </div>
+
+          <GarmentType subTypes={subTypes} />
+
+          <div className="mb-2 flex items-center gap-x-1">
+            <p className="font-semibold text-color-dark-blue">Suggestions:</p>
+            <Select
+              options={options}
+              onChange={handleSelect}
+              className="rounded-sm border border-color-dark-blue px-1"
+            />
+          </div>
+
+          <InputType
+            typeInput={typeInput}
+            onChange={handleTypeInput}
+            onClick={handleAdd}
+          />
+
+          <Button type="submit" onClick={handleSubmit} disabled={isAdding}>
+            Submit
+          </Button>
         </div>
-
-        <InputType
-          typeInput={typeInput}
-          onChange={handleTypeInput}
-          onClick={handleAdd}
-        />
-
-        <Button type="submit" onClick={handleSubmit} disabled={isAdding}>
-          Submit
-        </Button>
       </div>
     </Form>
   );

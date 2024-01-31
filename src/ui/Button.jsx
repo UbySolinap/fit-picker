@@ -16,6 +16,10 @@ function Button({ className, children, type, onClick, disabled }) {
       "border-2 px-1.5 py-1 border-color-light-blue rounded-lg bg-color-light-blue text-white font-semibold hover:scale-110 duration-100 hover:text-color-light-blue hover:bg-white mt-2 md:py-1 md:absolute md:right-3 md:bottom-6",
     modalClose:
       "absolute right-6 md:right-3 top-5 text-color-dark-blue text-lg md:text-2xl hover:scale-125 md:hover:scale-110 duration-100",
+    formPick:
+      "hover:scale-110 font-bold duration-100 hover:text-color-light-blue hover:bg-white border-2 px-2 py-2 border-color-light-blue rounded-lg bg-color-light-blue text-white",
+    formCancel:
+      "hover:scale-110 font-bold duration-100 hover:text-red-500 hover:bg-white border-2 px-2 py-2 border-red-500 rounded-lg bg-red-500 text-white",
   };
 
   return (

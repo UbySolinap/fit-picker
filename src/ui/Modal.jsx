@@ -27,10 +27,16 @@ function Modal({ children }) {
   );
 }
 
-function Open({ children, opens: opensWindowName }) {
+function Open({ children, opens: opensWindowName, onClose }) {
   const { open } = useContext(ModalContext);
 
-  return cloneElement(children, { onClick: () => open(opensWindowName) }); // Cloned the button so that the onclick prop can be passed
+  return cloneElement(children, {
+    onClick: () => {
+      if (opensWindowName === "pick-clothes-form") onClose();
+
+      open(opensWindowName);
+    },
+  }); // Cloned the button so that the onclick prop can be passed
 }
 
 function Window({ children, name }) {

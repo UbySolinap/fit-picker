@@ -68,9 +68,6 @@ export async function deleteItem(id) {
 }
 
 export async function updateItemSubType(id, newSubtypes) {
-  console.log(id);
-  console.log(newSubtypes);
-
   const { data, error } = await supabase
     .from("clothes")
     .update({ subtype: newSubtypes })
@@ -83,5 +80,19 @@ export async function updateItemSubType(id, newSubtypes) {
     throw new Error("Item could not be Updated.");
   }
 
+  return data;
+}
+
+export async function updateItemWornCount(id, newTimesWorn) {
+  const { data, error } = await supabase
+    .from("clothes")
+    .update({ timesWorn: newTimesWorn })
+    .eq("id", id)
+    .select();
+
+  if (error) {
+    console.error(error);
+    throw new Error("Item could not be Updated.");
+  }
   return data;
 }
