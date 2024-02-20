@@ -37,3 +37,22 @@
     @apply h-64 w-72 object-contain md:h-72 md:w-80;
   }
 }
+
+/* width */
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.activities::-webkit-scrollbar {
+  width: 8px;
+  display: none;
+}
+
+/* Handle */
+.activities::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #7395ae;
+}
+
+/* Handle on hover */
+.activities::-webkit-scrollbar-thumb:hover {
+  background: #557a95;
+}

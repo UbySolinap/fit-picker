@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import Header from "./Header";
+import HeaderNav from "./HeaderNav";
 import Footer from "./Footer";
 import Sidebar from "./Sidebar";
 
@@ -8,7 +8,7 @@ function AppLayout() {
     <div className="flex">
       <Sidebar />
       <div className="h-dvh w-full overflow-y-scroll">
-        <Header />
+        <HeaderNav />
         <main>
           <Outlet />
         </main>

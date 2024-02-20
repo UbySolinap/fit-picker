@@ -1,4 +1,5 @@
 import Button from "./Button";
+import ModalHeader from "./ModalHeader";
 
 function ConfirmationModal({ type, onClick, onCloseModal, disabled }) {
   let paragraph;
@@ -15,11 +16,15 @@ function ConfirmationModal({ type, onClick, onCloseModal, disabled }) {
     header = "Clear Selection";
   }
 
+  if (type === "deleteActivity") {
+    paragraph =
+      "Are you sure you want to delete this activity permanently? This action cannot be undone.";
+    header = "Deleting Activity";
+  }
+
   return (
     <div className="px-6 py-5 text-sm md:text-base">
-      <h1 className="border-b border-color-dark-blue text-lg font-bold italic text-color-dark-blue">
-        {header}
-      </h1>
+      <ModalHeader>{header}</ModalHeader>
       <p className="mb-3 mt-2 w-72 md:w-80">{paragraph}</p>
 
       <div className="flex justify-end space-x-1">

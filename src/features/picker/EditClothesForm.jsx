@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useEditItem } from "./useEditItem";
 import toast from "react-hot-toast";
 
@@ -23,7 +23,7 @@ function EditClothesForm({ garment, type, onCloseModal }) {
     setTypeInput(e.target.value);
   }
 
-  function handleAdd() {
+  const handleAdd = useCallback(() => {
     if (!typeInput) return;
 
     if (newSubtypes.includes(typeInput)) {
@@ -35,7 +35,7 @@ function EditClothesForm({ garment, type, onCloseModal }) {
 
     setNewSubtypes((subTypes) => [...subTypes, typeInput]);
     setTypeInput("");
-  }
+  }, [typeInput, newSubtypes]);
 
   function handleSubmit() {
     if (itemSubtypes === newSubtypes) return;
@@ -50,12 +50,26 @@ function EditClothesForm({ garment, type, onCloseModal }) {
     );
   }
 
+  // useEffect for handling "enter" key press to add subtypes.
+  useEffect(
+    function () {
+      function enterKeyPress(e) {
+        if (e.key === "Enter") handleAdd();
+      }
+
+      document.addEventListener("keyup", enterKeyPress, true);
+
+      return () => document.removeEventListener("keyup", enterKeyPress, true);
+    },
+    [handleAdd],
+  );
+
   return (
     <Form isLoading={isEditing} formTitle="Edit item">
-      <div className="w-72 md:ml-4 md:flex md:flex-col">
-        <div className="md:flex">
-          <img src={image} alt="item image" className="image-size" />
+      <div className="md:flex">
+        <img src={image} alt="item image" className="image-size" />
 
+        <div className="w-min">
           <h2 className="mb-2 mt-2 text-base font-bold text-color-dark-blue">
             Type:
             <span className="font-light italic text-slate-400">
@@ -78,11 +92,10 @@ function EditClothesForm({ garment, type, onCloseModal }) {
               onClick={handleAdd}
             />
           </div>
-
-          <Button type="submit" onClick={handleSubmit} disabled={isEditing}>
-            Submit
-          </Button>
         </div>
+        <Button type="submit" onClick={handleSubmit} disabled={isEditing}>
+          Submit
+        </Button>
       </div>
     </Form>
   );

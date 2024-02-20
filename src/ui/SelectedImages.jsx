@@ -1,20 +1,17 @@
-function SelectedImages({ items }) {
-  // For storing selected item images
-  let selectedItemImages = [];
-  for (const item of items) {
-    if (Object.keys(item[1]).length !== 0) {
-      selectedItemImages.push(item[1].image);
-    }
-  }
+function SelectedImages({ items, type }) {
+  const styles = {
+    picked: "m-2 h-44 w-44 object-contain md:m-3 md:h-52 md:w-52",
+    preview: "m-2 h-36 w-36 object-contain md:h-44 md:w-44",
+  };
 
   return (
-    <div className="grid grid-cols-2 gap-2">
-      {selectedItemImages.map((image) => (
+    <div className="flex flex-wrap items-center justify-center">
+      {items.map((image) => (
         <img
           src={image}
           alt="Selected img"
           key={image}
-          className="h-48 w-52 object-contain md:h-60 md:w-64"
+          className={styles[type]}
         />
       ))}
     </div>

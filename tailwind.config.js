@@ -4,6 +4,7 @@ export default {
   theme: {
     fontFamily: {
       sans: "Inter, sans-serif",
+      serif: "PT Serif, serif",
     },
     extend: {
       colors: {

@@ -58,6 +58,20 @@ function Window({ children, name }) {
     [close],
   );
 
+  // Use effect to handle close modal on "esc" key press
+  useEffect(
+    function () {
+      function escKeyPress(e) {
+        if (e.key === "Escape") close();
+      }
+
+      document.addEventListener("keyup", escKeyPress, true);
+
+      return () => document.removeEventListener("keyup", escKeyPress, true);
+    },
+    [close],
+  );
+
   if (name !== openName) return null;
 
   return createPortal(

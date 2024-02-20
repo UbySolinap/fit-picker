@@ -14,7 +14,7 @@ function MainNav({ open, onClose }) {
         >
           <GiClothes className="sidebar-icon" />
           <span className={`sidebar-text ${open ? "" : "hidden"}`}>
-            Fit Picker
+            Wardrobe
           </span>
         </NavLink>
       </li>

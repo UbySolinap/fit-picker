@@ -1,7 +1,9 @@
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { supabaseUrl } from "../../services/supabase";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useAddItem } from "./useAddItem";
+import { useAddActivity } from "./useAddActivity";
 
 import Button from "../../ui/Button";
 import Select from "../../ui/Select";
@@ -14,7 +16,9 @@ function AddClothesForm({ type, onCloseModal }) {
   const [image, setImage] = useState("");
   const [subTypes, setSubTypes] = useState([]);
   const [typeInput, setTypeInput] = useState("");
+
   const { isAdding, addItem } = useAddItem(type);
+  const { addActivity } = useAddActivity();
 
   const subTypesOptions = useSelector((state) => state.picker[type].subTypes);
 
@@ -43,7 +47,7 @@ function AddClothesForm({ type, onCloseModal }) {
     setTypeInput(e.target.value);
   }
 
-  function handleAdd() {
+  const handleAdd = useCallback(() => {
     if (!typeInput) return;
 
     if (subTypes.includes(typeInput)) {
@@ -55,37 +59,57 @@ function AddClothesForm({ type, onCloseModal }) {
 
     setSubTypes((subTypes) => [...subTypes, typeInput]);
     setTypeInput("");
-  }
+  }, [typeInput, subTypes]);
 
   function handleSubmit() {
     if (!image) return;
 
+    // Generate a random image name
+    const imageName = `${Math.random()}-${image.name}`.replaceAll("/", "");
+    const imagePath = `${supabaseUrl}/storage/v1/object/public/garment-images/${imageName}`;
+
     const newItem = { type, image, subtype: subTypes, timesWorn: 0 };
 
+    const newActivity = { status: "Added", clothesImages: [imagePath] };
+
+    addActivity(newActivity);
+
     addItem(
-      { ...newItem },
+      { newItem, imageName, imagePath },
       {
         onSuccess: () => {
           onCloseModal?.();
         },
       },
     );
-
-    // addItem(newItem); // This will add the new item to the supabase.
   }
+
+  // useEffect for handling "enter" key press to add subtypes.
+  useEffect(
+    function () {
+      function enterKeyPress(e) {
+        if (e.key === "Enter") handleAdd();
+      }
+
+      document.addEventListener("keyup", enterKeyPress, true);
+
+      return () => document.removeEventListener("keyup", enterKeyPress, true);
+    },
+    [handleAdd],
+  );
 
   return (
     <Form isLoading={isAdding} formTitle="Add item">
-      <div className="w-min md:ml-4 md:flex md:flex-col">
-        <div className="md:flex">
-          <img
-            src={image ? URL.createObjectURL(image) : "./placeholder-img.png"}
-            alt="item image"
-            className="image-size"
-          />
+      <div className="md:flex">
+        <img
+          src={image ? URL.createObjectURL(image) : "./placeholder-img.png"}
+          alt="item image"
+          className="image-size"
+        />
+        <div className="w-min">
+          <ImageAdd onChange={handleImage} type="add-photo" />
 
-          <ImageAdd onChange={handleImage} />
-          <div className="mb-1 flex gap-x-1 border-t border-color-light-blue pt-1">
+          <div className="flex gap-x-1 border-t border-color-light-blue pb-1 pt-2">
             <h2 className="text-base font-bold text-color-dark-blue">
               Add type:
             </h2>
@@ -98,12 +122,12 @@ function AddClothesForm({ type, onCloseModal }) {
 
           <GarmentType subTypes={subTypes} />
 
-          <div className="mb-2 flex items-center gap-x-1">
-            <p className="font-semibold text-color-dark-blue">Suggestions:</p>
+          <div className="flex items-center gap-x-1 py-2">
+            <p className="font-bold text-color-dark-blue">Suggestions:</p>
             <Select
               options={options}
               onChange={handleSelect}
-              className="rounded-sm border border-color-dark-blue px-1"
+              type="selection"
             />
           </div>
 
@@ -112,11 +136,11 @@ function AddClothesForm({ type, onCloseModal }) {
             onChange={handleTypeInput}
             onClick={handleAdd}
           />
-
-          <Button type="submit" onClick={handleSubmit} disabled={isAdding}>
-            Submit
-          </Button>
         </div>
+
+        <Button type="submit" onClick={handleSubmit} disabled={isAdding}>
+          Submit
+        </Button>
       </div>
     </Form>
   );

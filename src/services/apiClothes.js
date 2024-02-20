@@ -1,4 +1,4 @@
-import supabase, { supabaseUrl } from "./supabase";
+import supabase from "./supabase";
 
 export async function getClothes() {
   const { data, error } = await supabase.from("clothes").select("*");
@@ -26,14 +26,7 @@ export async function getClothesType(type, filter) {
   return data;
 }
 
-export async function addToClothes(newItem) {
-  // Generate a random image name
-  const imageName = `${Math.random()}-${newItem.image.name}`.replaceAll(
-    "/",
-    "",
-  );
-  const imagePath = `${supabaseUrl}/storage/v1/object/public/garment-images/${imageName}`;
-
+export async function addToClothes(newItem, imageName, imagePath) {
   const { data, error } = await supabase
     .from("clothes")
     .insert([{ ...newItem, image: imagePath }]);
@@ -93,6 +86,21 @@ export async function updateItemWornCount(id, newTimesWorn) {
   if (error) {
     console.error(error);
     throw new Error("Item could not be Updated.");
+  }
+  return data;
+}
+
+export async function getClothesTypeByOrder(type) {
+  const { data, error } = await supabase
+    .from("clothes")
+    .select("*")
+    .eq("type", type)
+    .order("timesWorn", { ascending: false })
+    .limit(10);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Clothes could not be loaded.");
   }
   return data;
 }

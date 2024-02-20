@@ -1,10 +1,18 @@
 import { FaRegImage } from "react-icons/fa6";
 
-function ImageAdd({ onChange }) {
+function ImageAdd({ onChange, type }) {
+  let header;
+
+  if (type === "add-photo") {
+    header = "Upload photo";
+  }
+  if (type === "own-fit") {
+    header = "Upload your fit";
+  }
   return (
     <div className="my-2">
       <h2 className="mb-1 flex items-center text-base font-bold text-color-dark-blue">
-        <FaRegImage className="mr-1" /> Upload a photo:
+        <FaRegImage className="mr-1" /> {header}
       </h2>
       <input
         id="image"

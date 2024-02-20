@@ -1,5 +1,6 @@
+import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
-import { useClothesPicker } from "./useClothesPicker";
+import { useAddActivity } from "./useAddActivity";
 import { useUpdateItemWornCount } from "./useUpdateItemWornCount";
 
 import Form from "../../ui/Form";
@@ -7,7 +8,7 @@ import SelectedImages from "../../ui/SelectedImages";
 import Button from "../../ui/Button";
 
 function PickClothesForm({ onCloseModal }) {
-  const { addActivity, isAdding } = useClothesPicker();
+  const { addActivity, isAdding } = useAddActivity();
   const { updateItem } = useUpdateItemWornCount();
 
   const selectedTops = useSelector((state) => state.picker.tops.item);
@@ -15,50 +16,44 @@ function PickClothesForm({ onCloseModal }) {
   const selectedOuterwear = useSelector((state) => state.picker.outerwear.item);
   const selectedFootwear = useSelector((state) => state.picker.footwear.item);
 
-  const selectedItem = {
+  const selectedItems = {
     tops: selectedTops,
     bottoms: selectedBottoms,
     outerwear: selectedOuterwear,
     footwear: selectedFootwear,
   };
 
-  const selectedItemArr = Object.entries(selectedItem);
+  const selectedItemsInfos = Object.values(selectedItems);
 
-  // For storing selected item's necessary info
-  let selectedItemInfo = [];
-  for (const item of selectedItemArr) {
-    if (Object.keys(item[1]).length !== 0) {
-      selectedItemInfo.push({
-        id: item[1].id,
-        timesWorn: item[1].timesWorn,
-        type: item[0],
-      });
+  const SelectedItemsImages = [];
+  for (const item of selectedItemsInfos) {
+    if (Object.values(item).length !== 0) {
+      SelectedItemsImages.push(item.image);
     }
   }
 
   function handleSubmit() {
     const newActivity = {
-      status: "picked",
-      topsImage: selectedTops.image || null,
-      bottomsImage: selectedBottoms.image || null,
-      outerwearImage: selectedOuterwear.image || null,
-      footwearImage: selectedFootwear.image || null,
+      status: "Picked",
+      clothesImages: SelectedItemsImages,
     };
 
-    // Loop for updating the times worn of an item.
-    for (let i = 0; i < selectedItemInfo.length; i++) {
-      const newTimesWorn = selectedItemInfo[i].timesWorn + 1;
-      const itemId = selectedItemInfo[i].id;
-      const type = selectedItemInfo[i].type;
-      console.log(type);
+    for (let i = 0; i < selectedItemsInfos.length; i++) {
+      if (Object.values(selectedItemsInfos[i]).length !== 0) {
+        const newTimesWorn = selectedItemsInfos[i].timesWorn + 1;
+        const itemId = selectedItemsInfos[i].id;
 
-      updateItem({ itemId, newTimesWorn });
+        updateItem({ itemId, newTimesWorn });
+      }
     }
 
     addActivity(
       { ...newActivity },
       {
         onSuccess: () => {
+          toast.success(
+            "🧥 Fit picked, go out and show your style to the world!",
+          );
           onCloseModal?.();
         },
       },
@@ -67,7 +62,9 @@ function PickClothesForm({ onCloseModal }) {
 
   return (
     <Form formTitle="Go with this clothes?">
-      <SelectedImages items={selectedItemArr} />
+      <div className="w-96 md:w-[30rem]">
+        <SelectedImages items={SelectedItemsImages} type="picked" />
+      </div>
 
       <div className="mt-2 flex justify-center gap-x-2 border-t border-color-dark-blue pt-2">
         <Button
@@ -75,10 +72,10 @@ function PickClothesForm({ onCloseModal }) {
           onClick={() => onCloseModal?.()}
           disabled={isAdding}
         >
-          TRY ANOTHER
+          Try another
         </Button>
         <Button type="formPick" onClick={handleSubmit} disabled={isAdding}>
-          PICK THIS OUTFIT
+          Pick this outfit
         </Button>
       </div>
     </Form>

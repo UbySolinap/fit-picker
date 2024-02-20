@@ -10,9 +10,10 @@ import ClothesOperation from "./ClothesOperation";
 
 import NextArrow from "../../ui/NextArrow";
 import PrevArrow from "../../ui/PrevArrow";
+import SectionHeader from "../../ui/SectionHeader";
 
 function ClothesSelector({ type, selected }) {
-  const { clothes, isLoading, error } = useClothesType(type);
+  const { clothes, isLoading } = useClothesType(type);
 
   const dispatch = useDispatch();
 
@@ -47,8 +48,8 @@ function ClothesSelector({ type, selected }) {
     speed: 300,
     slidesToShow: 4,
     slidesToScroll: 1,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
+    nextArrow: <NextArrow type="main" />,
+    prevArrow: <PrevArrow type="main" />,
     responsive: [
       {
         breakpoint: 1536,
@@ -94,6 +95,10 @@ function ClothesSelector({ type, selected }) {
 
   return (
     <div className="mx-6 lg:mx-16 2xl:mx-20">
+      <SectionHeader>
+        {type.charAt(0).toUpperCase() + type.slice(1)} Section
+      </SectionHeader>
+
       <ClothesOperation type={type} />
 
       <Slider {...settings} ref={sliderRef}>

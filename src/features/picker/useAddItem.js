@@ -6,9 +6,10 @@ export function useAddItem(type) {
   const queryClient = useQueryClient();
 
   const { mutate: addItem, isPending: isAdding } = useMutation({
-    mutationFn: (newItem) => addToClothes(newItem),
+    mutationFn: ({ newItem, imageName, imagePath }) =>
+      addToClothes(newItem, imageName, imagePath),
     onSuccess: () => {
-      toast.success(`New Item added to ${type}.`);
+      toast.success(`➕ New Item added to ${type}.`);
       // To re-fetch the data
       queryClient.invalidateQueries({ queryKey: ["clothes", type] });
     },
