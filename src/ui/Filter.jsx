@@ -2,7 +2,6 @@ import { useSearchParams } from "react-router-dom";
 import Select from "./Select";
 
 function Filter({ type, options }) {
-  console.log(type);
   const [searchParams, setSearchParams] = useSearchParams();
 
   function handleChange(e) {

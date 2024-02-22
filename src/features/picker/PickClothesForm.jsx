@@ -1,7 +1,7 @@
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { useAddActivity } from "./useAddActivity";
-import { useUpdateItemWornCount } from "./useUpdateItemWornCount";
+import { useUpdateItem } from "./useUpdateItem";
 
 import Form from "../../ui/Form";
 import SelectedImages from "../../ui/SelectedImages";
@@ -9,7 +9,7 @@ import Button from "../../ui/Button";
 
 function PickClothesForm({ onCloseModal }) {
   const { addActivity, isAdding } = useAddActivity();
-  const { updateItem } = useUpdateItemWornCount();
+  const { updateItem } = useUpdateItem();
 
   const selectedTops = useSelector((state) => state.picker.tops.item);
   const selectedBottoms = useSelector((state) => state.picker.bottoms.item);

@@ -10,6 +10,7 @@ import {
 } from "recharts";
 
 import GarmentType from "../../ui/GarmentType";
+import { format } from "date-fns";
 
 function CustomAxisTick(props) {
   return (
@@ -26,18 +27,30 @@ function CustomAxisTick(props) {
 }
 
 function CustomToolTip(props) {
+  const dateAdded = props.payload[0]?.payload.dateAdded.slice(0, 10) || null;
+
+  const formattedDate = format(new Date(dateAdded), "MMM dd, yyyy");
+
   return (
-    <div className="w-11/12 rounded-lg border-2 border-color-light-blue bg-white px-3 py-1 font-bold text-color-dark-blue">
+    <div className="rounded-lg border-2 border-color-light-blue bg-white px-3 py-1 text-sm font-bold text-color-dark-blue">
       <p>
-        Date added:
+        Last Worn:
         <span className="ml-1 font-semibold italic text-color-dark-gray">
-          {props.payload[0]?.payload.dateAdded.slice(0, 10)}
+          {props.payload[0]?.payload.lastWorn}
         </span>
       </p>
+
       <p>
         {props.payload[0]?.name}
         <span className="ml-1 font-semibold italic text-color-dark-gray">
           {props.payload[0]?.payload.timesWorn}x
+        </span>
+      </p>
+
+      <p>
+        Added on:
+        <span className="ml-1 font-semibold italic text-color-dark-gray">
+          {formattedDate}
         </span>
       </p>
 

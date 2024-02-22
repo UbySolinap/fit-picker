@@ -1,11 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
-import { updateItemWornCount } from "../../services/apiClothes";
+import { updateItem as updateItemApi } from "../../services/apiClothes";
 import toast from "react-hot-toast";
 
-export function useUpdateItemWornCount() {
+export function useUpdateItem() {
   const { mutate: updateItem } = useMutation({
     mutationFn: ({ itemId, newTimesWorn }) =>
-      updateItemWornCount(itemId, newTimesWorn),
+      updateItemApi(itemId, newTimesWorn),
     onError: (err) => toast.error(err.message),
   });
 

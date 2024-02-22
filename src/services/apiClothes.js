@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import supabase from "./supabase";
 
 export async function getClothes() {
@@ -76,10 +77,14 @@ export async function updateItemSubType(id, newSubtypes) {
   return data;
 }
 
-export async function updateItemWornCount(id, newTimesWorn) {
+export async function updateItem(id, newTimesWorn) {
+  // To update the last worn
+  const dateToday = new Date();
+  const formattedDate = format(new Date(dateToday), "MMM dd, yyyy");
+
   const { data, error } = await supabase
     .from("clothes")
-    .update({ timesWorn: newTimesWorn })
+    .update({ timesWorn: newTimesWorn, lastWorn: formattedDate })
     .eq("id", id)
     .select();
 
